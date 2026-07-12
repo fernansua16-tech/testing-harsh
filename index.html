@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Butter Chicken Recipe | Daring Gourmet Style</title>
+  <meta name="description" content="A single page butter chicken recipe blog layout inspired by classic food magazine websites.">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+
+    :root {
+      --ink: #1d1a17;
+      --muted: #746b62;
+      --gold: #d6a331;
+      --gold-dark: #a87511;
+      --cream: #fbf5ea;
+      --line: #e7ddce;
+      --tomato: #a94224;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Source Sans 3', Arial, sans-serif;
+      color: var(--ink);
+      background: #fffaf2;
+    }
+
+    .serif {
+      font-family: 'Libre Baskerville', Georgia, serif;
+    }
+
+    .progress-bar {
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    .article-copy p {
+      margin-bottom: 1.15rem;
+      line-height: 1.82;
+      color: #3d362f;
+      font-size: 1.05rem;
+    }
+
+    .article-copy h2 {
+      margin-top: 2.35rem;
+      margin-bottom: 0.8rem;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.15rem);
+      line-height: 1.25;
+    }
+
+    .article-copy h3 {
+      margin-top: 1.9rem;
+      margin-bottom: 0.7rem;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+
+    .recipe-shadow {
+      box-shadow: 0 18px 45px rgba(60, 39, 14, 0.12);
+    }
+
+    .image-warm {
+      filter: saturate(1.08) contrast(1.02);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-photo {
+      animation: photoRise 900ms ease both;
+    }
+
+    .brand-lockup {
+      animation: brandDrop 650ms ease both;
+    }
+
+    @keyframes photoRise {
+      from { opacity: 0; transform: translateY(22px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes brandDrop {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal, .hero-photo, .brand-lockup { animation: none; opacity: 1; transform: none; transition: none; }
+    }
+
+    @media print {
+      header, footer, aside, .no-print, .progress-shell { display: none !important; }
+      body { background: #fff; }
+      .recipe-card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-shell fixed left-0 top-0 z-50 h-1 w-full bg-transparent">
+    <div id="progressBar" class="progress-bar h-full bg-[#d6a331]"></div>
+  </div>
+
+  <header class="bg-white border-b border-[#e7ddce]">
+    <div class="bg-[#201b16] text-white text-sm">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+        <p class="tracking-wide">Bold global recipes, tested for the home kitchen</p>
+        <button id="topSearchBtn" class="hidden lg:inline-flex items-center gap-2 border-b border-[#d6a331] text-[#f6d88a] transition hover:text-white" type="button">
+          Search recipes
+        </button>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-4 py-7 text-center brand-lockup">
+      <a href="#" class="serif inline-block text-3xl font-bold tracking-[0.18em] sm:text-5xl">THE DARING GOURMET</a>
+      <p class="mt-2 text-sm uppercase tracking-[0.32em] text-[#746b62]">Inspired recipe magazine layout</p>
+    </div>
+
+    <nav class="border-t border-[#e7ddce] bg-[#fffaf2]">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4">
+        <button id="menuBtn" class="py-4 text-sm font-bold uppercase tracking-[0.22em] lg:hidden" type="button">Menu</button>
+        <ul id="mainMenu" class="hidden w-full flex-col gap-1 py-3 text-sm font-bold uppercase tracking-[0.16em] lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-7 lg:py-0">
+          <li><a class="block py-2 transition hover:text-[#a87511]" href="#recipe">Recipe</a></li>
+          <li><a class="block py-2 transition hover:text-[#a87511]" href="#method">Method</a></li>
+          <li><a class="block py-2 transition hover:text-[#a87511]" href="#ingredients">Ingredients</a></li>
+          <li><a class="block py-2 transition hover:text-[#a87511]" href="#storage">Storage</a></li>
+          <li><a class="block py-2 transition hover:text-[#a87511]" href="#newsletter">Newsletter</a></li>
+        </ul>
+        <form id="searchForm" class="hidden items-center gap-2 border-l border-[#e7ddce] py-3 pl-5 lg:flex">
+          <label class="sr-only" for="searchInput">Search</label>
+          <input id="searchInput" class="w-44 bg-transparent text-sm outline-none placeholder:text-[#9d9083]" type="search" placeholder="Search recipe">
+          <button class="bg-[#201b16] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#a87511]" type="submit">Go</button>
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="bg-[#fbf5ea] border-b border-[#e7ddce]">
+      <div class="mx-auto grid max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[minmax(0,820px)_320px] lg:py-12">
+        <article>
+          <div class="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-[#a87511]">
+            Home / Indian Recipes / Butter Chicken
+          </div>
+          <h1 class="serif max-w-4xl text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Butter Chicken <span class="block text-[#a94224]">Murgh Makhani</span></h1>
+          <p class="mt-5 max-w-3xl text-xl leading-8 text-[#4c443c]">A restaurant-style Indian butter chicken page with a warm editorial layout, rich food photography, recipe buttons, and a printable recipe box.</p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#746b62]">
+            <span>By The Daring Kitchen</span>
+            <span class="h-1 w-1 rounded-full bg-[#d6a331]"></span>
+            <span>Updated today</span>
+            <span class="h-1 w-1 rounded-full bg-[#d6a331]"></span>
+            <span>5.0 rating from home cooks</span>
+          </div>
+
+          <div class="no-print mt-7 flex flex-wrap gap-3">
+            <a href="#recipe" class="bg-[#d6a331] px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[#201b16] transition hover:bg-[#c18b18]">Jump to Recipe</a>
+            <button id="printBtn" class="border-2 border-[#201b16] px-5 py-3 text-sm font-extrabold uppercase tracking-[0.18em] transition hover:bg-[#201b16] hover:text-white" type="button">Print Recipe</button>
+          </div>
+
+          <figure class="hero-photo mt-8 overflow-hidden border-y-4 border-[#201b16] bg-white">
+            <img class="image-warm h-[320px] w-full object-cover sm:h-[520px]" src="https://images.pexels.com/photos/20446397/pexels-photo-20446397.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400" alt="Butter chicken with naan, rice, onions, and spices">
+            <figcaption class="bg-white px-4 py-3 text-sm text-[#746b62]">Stock photo by Jack Baghel on Pexels, used as a recipe visual.</figcaption>
+          </figure>
+        </article>
+
+        <aside class="hidden lg:block">
+          <div class="sticky top-6 border-l-4 border-[#d6a331] bg-white px-6 py-6">
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-[#a87511]">About this page</p>
+            <h2 class="serif mt-2 text-2xl font-bold">Food blog style clone</h2>
+            <p class="mt-3 leading-7 text-[#5f554b]">This single page recreates the feeling of a classic recipe article while using fresh copy, stock images, and responsive HTML, CSS, and JavaScript.</p>
+            <div class="mt-5 border-t border-[#e7ddce] pt-5 text-sm text-[#746b62]">
+              <p><strong class="text-[#201b16]">Prep:</strong> 10 minutes</p>
+              <p><strong class="text-[#201b16]">Cook:</strong> 30 minutes</p>
+              <p><strong class="text-[#201b16]">Serves:</strong> 4</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="mx-auto grid max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[minmax(0,780px)_320px] lg:py-14">
+      <article class="article-copy">
+        <div class="reveal border-y border-[#e7ddce] py-6">
+          <p class="mb-0 text-lg font-semibold leading-8 text-[#3d362f]">Butter chicken is loved for its silky tomato cream sauce, gentle spices, and tender chicken. This page keeps the content concise and visually close to a premium recipe blog: headline first, large image, helpful sections, and a strong recipe block at the bottom.</p>
+        </div>
+
+        <div class="reveal">
+          <h2>What is Butter Chicken?</h2>
+          <p>Butter Chicken, also known as Murgh Makhani, is a North Indian dish made with marinated chicken simmered in a buttery tomato sauce. The flavor is rich, mildly spiced, creamy, and perfect with basmati rice or warm naan.</p>
+          <p>The traditional version uses smoky cooked chicken, but a home kitchen version can be grilled, broiled, pan-seared, or simmered directly in the sauce. The important part is building flavor in layers: yogurt marinade, toasted spices, tomato, butter, and cream.</p>
+        </div>
+
+        <figure class="reveal my-8 bg-white">
+          <img class="image-warm h-[300px] w-full object-cover sm:h-[430px]" src="https://images.pexels.com/photos/20408457/pexels-photo-20408457.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200" alt="Indian spices and ingredients laid out on plates">
+          <figcaption class="border-b border-[#e7ddce] px-4 py-3 text-sm text-[#746b62]">Spices, yogurt, tomato, butter, and cream create the signature sauce.</figcaption>
+        </figure>
+
+        <div id="method" class="reveal">
+          <h2>How the Chicken is Cooked</h2>
+          <p>For the closest restaurant-style flavor, marinate the chicken first, then grill or broil it until lightly charred. If you are short on time, pan-sear the pieces and continue with the sauce. Either way, save the marinade because it becomes part of the curry base.</p>
+          <p>The sauce starts with onion, garlic, and ginger cooked in ghee. Tomato puree and spices are added next, followed by butter and cream at the end so the curry stays smooth and glossy.</p>
+        </div>
+
+        <div class="reveal grid gap-5 border-y border-[#e7ddce] py-7 sm:grid-cols-3">
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#a87511]">Flavor</p>
+            <p class="mt-2 text-lg font-bold">Creamy, warm, gently spiced</p>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#a87511]">Best With</p>
+            <p class="mt-2 text-lg font-bold">Basmati rice or naan</p>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#a87511]">Heat Level</p>
+            <p class="mt-2 text-lg font-bold">Mild to medium</p>
+          </div>
+        </div>
+
+        <div id="ingredients" class="reveal">
+          <h2>Butter Chicken Ingredients</h2>
+          <p>The spice list looks long, but the method is simple. Garam masala, turmeric, cardamom, chili powder, cinnamon, and cloves give the dish its deep aroma. Almond flour helps thicken the sauce without making it heavy.</p>
+          <h3>Helpful ingredient notes</h3>
+          <p>Use full-fat yogurt for a smoother marinade, tomato puree for a bright sauce, and unsalted butter so you can control the final seasoning. Fresh cilantro and a swirl of cream make the final bowl look finished.</p>
+        </div>
+
+        <figure class="reveal my-8 bg-white">
+          <img class="image-warm h-[300px] w-full object-cover sm:h-[430px]" src="https://images.pexels.com/photos/20446394/pexels-photo-20446394.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200" alt="Indian curry with flatbread on a table">
+          <figcaption class="border-b border-[#e7ddce] px-4 py-3 text-sm text-[#746b62]">Serve the curry with naan, rice, sliced onions, and fresh herbs.</figcaption>
+        </figure>
+
+        <div id="storage" class="reveal">
+          <h2>Make Ahead and Storage</h2>
+          <p>This curry tastes even better after resting because the spices have time to settle into the sauce. Cool it completely, refrigerate it in an airtight container, and gently reheat on the stove.</p>
+          <p>If you want to freeze it, freeze the chicken and tomato sauce before adding cream. Stir in the cream after reheating for the best texture.</p>
+        </div>
+
+        <section id="recipe" class="recipe-card recipe-shadow reveal mt-12 overflow-hidden border border-[#e7ddce] bg-white">
+          <div class="bg-[#201b16] px-6 py-5 text-white sm:px-8">
+            <p class="text-xs font-bold uppercase tracking-[0.26em] text-[#f6d88a]">Save this recipe</p>
+            <h2 class="serif mt-2 text-3xl font-bold sm:text-4xl">Butter Chicken Recipe</h2>
+            <p class="mt-3 max-w-2xl text-[#f4eadc]">A simplified, home-friendly Murgh Makhani with creamy tomato sauce and tender chicken.</p>
+          </div>
+
+          <div class="grid gap-0 lg:grid-cols-[260px_minmax(0,1fr)]">
+            <img class="h-full min-h-[260px] w-full object-cover" src="https://images.pexels.com/photos/12737918/pexels-photo-12737918.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=600" alt="Creamy Indian curry with naan">
+
+            <div class="p-6 sm:p-8">
+              <div class="grid gap-4 border-b border-[#e7ddce] pb-6 text-sm sm:grid-cols-4">
+                <div><strong class="block text-[#201b16]">Prep</strong><span class="text-[#746b62]">10 min</span></div>
+                <div><strong class="block text-[#201b16]">Cook</strong><span class="text-[#746b62]">30 min</span></div>
+                <div><strong class="block text-[#201b16]">Marinate</strong><span class="text-[#746b62]">2 hr</span></div>
+                <div><strong class="block text-[#201b16]">Serves</strong><span id="servingCount" class="text-[#746b62]">4</span></div>
+              </div>
+
+              <div class="no-print mt-6 flex flex-wrap items-center gap-3">
+                <button id="minusServe" class="border border-[#d6a331] px-3 py-2 text-sm font-bold transition hover:bg-[#fbf5ea]" type="button">- Serves</button>
+                <button id="plusServe" class="border border-[#d6a331] px-3 py-2 text-sm font-bold transition hover:bg-[#fbf5ea]" type="button">+ Serves</button>
+                <button id="saveBtn" class="bg-[#d6a331] px-4 py-2 text-sm font-extrabold uppercase tracking-[0.16em] transition hover:bg-[#c18b18]" type="button">Save</button>
+              </div>
+
+              <div class="mt-8 grid gap-8 lg:grid-cols-2">
+                <div>
+                  <h3 class="mt-0 text-xl font-extrabold">Ingredients</h3>
+                  <ul id="ingredientList" class="mt-4 space-y-3 leading-7 text-[#3d362f]">
+                    <li><span data-base="2">2</span> lb boneless chicken, bite-size pieces</li>
+                    <li><span data-base="1.5">1.5</span> cups full-fat plain yogurt</li>
+                    <li><span data-base="0.25">0.25</span> cup almond flour</li>
+                    <li><span data-base="1">1</span> tbsp lemon juice</li>
+                    <li><span data-base="2.5">2.5</span> tsp garam masala</li>
+                    <li><span data-base="0.5">0.5</span> tsp turmeric</li>
+                    <li><span data-base="2">2</span> tbsp ghee</li>
+                    <li><span data-base="1">1</span> onion, finely chopped</li>
+                    <li><span data-base="14">14</span> oz tomato puree</li>
+                    <li><span data-base="0.25">0.25</span> cup butter</li>
+                    <li><span data-base="0.33">0.33</span> cup heavy cream</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="mt-0 text-xl font-extrabold">Instructions</h3>
+                  <ol class="mt-4 space-y-4 leading-7 text-[#3d362f]">
+                    <li><strong>1.</strong> Mix yogurt, almond flour, lemon juice, garlic, ginger, salt, sugar, and spices. Coat the chicken and marinate for at least 2 hours.</li>
+                    <li><strong>2.</strong> Grill, broil, or pan-sear the chicken until browned. Keep the extra marinade for the sauce.</li>
+                    <li><strong>3.</strong> Cook onion in ghee until golden. Add garlic and ginger, then add chicken, marinade, and tomato puree.</li>
+                    <li><strong>4.</strong> Simmer covered for 20 to 25 minutes, stirring occasionally.</li>
+                    <li><strong>5.</strong> Stir in butter and cream. Season to taste and garnish with cilantro.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="mt-8 border-t border-[#e7ddce] pt-5 text-sm leading-7 text-[#746b62]">
+                <p><strong class="text-[#201b16]">Serving idea:</strong> Pair with steamed basmati rice, naan, cucumber raita, and a small squeeze of lemon.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <aside class="space-y-8">
+        <section class="reveal border-t-4 border-[#201b16] bg-white p-6">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-[#a87511]">Popular</p>
+          <h2 class="serif mt-2 text-2xl font-bold">More Indian Favorites</h2>
+          <ul class="mt-5 space-y-3 text-[#3d362f]">
+            <li><a class="border-b border-[#d6a331] transition hover:text-[#a87511]" href="#">Chicken Tikka Masala</a></li>
+            <li><a class="border-b border-[#d6a331] transition hover:text-[#a87511]" href="#">Palak Paneer</a></li>
+            <li><a class="border-b border-[#d6a331] transition hover:text-[#a87511]" href="#">Mango Chicken Curry</a></li>
+            <li><a class="border-b border-[#d6a331] transition hover:text-[#a87511]" href="#">Chana Masala</a></li>
+          </ul>
+        </section>
+
+        <section id="newsletter" class="reveal bg-[#201b16] p-6 text-white">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-[#f6d88a]">Newsletter</p>
+          <h2 class="serif mt-2 text-2xl font-bold">Get the recipe inbox style</h2>
+          <p class="mt-3 leading-7 text-[#f4eadc]">Enter an email to preview a food blog newsletter interaction.</p>
+          <form id="newsletterForm" class="mt-5 space-y-3">
+            <label class="sr-only" for="emailInput">Email</label>
+            <input id="emailInput" required type="email" placeholder="you@example.com" class="w-full border border-[#6f6256] bg-white px-4 py-3 text-[#201b16] outline-none focus:border-[#d6a331]">
+            <button class="w-full bg-[#d6a331] px-4 py-3 text-sm font-extrabold uppercase tracking-[0.18em] text-[#201b16] transition hover:bg-[#c18b18]" type="submit">Send Recipe</button>
+          </form>
+          <p id="newsletterMsg" class="mt-3 text-sm text-[#f6d88a]"></p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="border-t border-[#e7ddce] bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-8 text-center text-sm text-[#746b62]">
+      <p class="serif text-2xl font-bold tracking-[0.15em] text-[#201b16]">THE DARING GOURMET</p>
+      <p class="mt-3">Single-page HTML, CSS, and JavaScript recreation for practice. Photos are stock images from Pexels.</p>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mainMenu = document.getElementById('mainMenu');
+    const printBtn = document.getElementById('printBtn');
+    const progressBar = document.getElementById('progressBar');
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterMsg = document.getElementById('newsletterMsg');
+    const searchForm = document.getElementById('searchForm');
+    const topSearchBtn = document.getElementById('topSearchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const saveBtn = document.getElementById('saveBtn');
+    const servingCount = document.getElementById('servingCount');
+    const plusServe = document.getElementById('plusServe');
+    const minusServe = document.getElementById('minusServe');
+
+    menuBtn.addEventListener('click', () => {
+      mainMenu.classList.toggle('hidden');
+      mainMenu.classList.toggle('flex');
+    });
+
+    printBtn.addEventListener('click', () => window.print());
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+      progressBar.style.transform = `scaleX(${progress})`;
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    newsletterForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      newsletterMsg.textContent = 'Recipe link preview sent. This is a front-end demo.';
+      newsletterForm.reset();
+    });
+
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = searchInput.value.trim();
+      if (query) {
+        alert(`Search demo: ${query}`);
+      }
+    });
+
+    topSearchBtn.addEventListener('click', () => {
+      searchInput.focus();
+    });
+
+    saveBtn.addEventListener('click', () => {
+      saveBtn.textContent = 'Saved';
+      setTimeout(() => {
+        saveBtn.textContent = 'Save';
+      }, 1800);
+    });
+
+    let serves = 4;
+    const baseServes = 4;
+
+    function formatAmount(value) {
+      const rounded = Math.round(value * 100) / 100;
+      return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.00$/, '');
+    }
+
+    function updateServings(nextServes) {
+      serves = Math.min(12, Math.max(2, nextServes));
+      servingCount.textContent = String(serves);
+      const multiplier = serves / baseServes;
+      document.querySelectorAll('[data-base]').forEach((item) => {
+        const base = Number(item.dataset.base);
+        item.textContent = formatAmount(base * multiplier);
+      });
+    }
+
+    plusServe.addEventListener('click', () => updateServings(serves + 1));
+    minusServe.addEventListener('click', () => updateServings(serves - 1));
+  </script>
+</body>
+</html>
